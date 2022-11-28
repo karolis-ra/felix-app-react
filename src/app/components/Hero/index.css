@@ -1,0 +1,18 @@
+.Hero-background {
+  max-width: 1120px;
+}
+
+.Hero {
+  background-image: url('../../images/Hero_Image.png');
+  padding: 145px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.Title-text {
+  color: #ffffff;
+  font-size: 48px;
+  font-family: 'Roboto';
+  justify-content: center;
+  text-align: center;
+}

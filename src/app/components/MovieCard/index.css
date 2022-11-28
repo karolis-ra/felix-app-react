@@ -1,0 +1,37 @@
+.Card {
+  background-color: #222222;
+  max-width: 270px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.Card-image {
+  max-width: 270px;
+}
+
+.Title {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: left;
+  margin-left: 22px;
+  margin-right: 21px;
+}
+
+.Description {
+  color: #fff;
+  margin-left: 22px;
+  margin-right: 21px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.Button-wrap {
+  display: flex;
+  justify-content: left;
+  margin-left: 20px;
+  margin-bottom: 14px;
+}
