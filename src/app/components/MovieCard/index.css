@@ -7,7 +7,10 @@
 }
 
 .Card-image {
-  max-width: 270px;
+  width: 270px;
+  height: 200px;
+  object-fit: cover;
+  object-position: 100% 15%;
 }
 
 .Title {

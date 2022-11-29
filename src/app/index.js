@@ -19,15 +19,14 @@ class App extends React.Component {
 
   async componentDidMount() {
     this.setState({ loading: true });
+
     try {
-      window.addEventListener('DOMContentLoaded', (e) => {
-        if (localStorage.getItem('favoriteMovies')) {
-          const favoriteMovies = JSON.parse(
-            localStorage.getItem('favoriteMovies')
-          );
-          this.setState({ favoriteMovies });
-        }
-      });
+      if (localStorage.getItem('favoriteMovies')) {
+        const favoriteMovies = JSON.parse(
+          localStorage.getItem('favoriteMovies')
+        );
+        this.setState({ favoriteMovies });
+      }
 
       const result = await fetch(
         'https://academy-video-api.herokuapp.com/content/free-items'
@@ -45,32 +44,36 @@ class App extends React.Component {
     }
   }
 
+  setFavorite = (e) => {
+    const movieId = e.target.id;
+
+    if (this.state.favoriteMovies) {
+      const favoriteMoviesArray = this.state.favoriteMovies;
+      if (!favoriteMoviesArray.find((movie) => movie === movieId)) {
+        favoriteMoviesArray.push(movieId);
+        localStorage.setItem(
+          'favoriteMovies',
+          JSON.stringify(this.state.favoriteMovies)
+        );
+      } else {
+        const index = favoriteMoviesArray.findIndex(
+          (movie) => movieId === movie
+        );
+        favoriteMoviesArray.splice(index, 1);
+        localStorage.setItem(
+          'favoriteMovies',
+          JSON.stringify(favoriteMoviesArray)
+        );
+      }
+    } else {
+      let movieList = [];
+      movieList.push(movieId);
+      localStorage.setItem('favoriteMovies', JSON.stringify(movieList));
+    }
+  };
+
   render() {
     const { movies } = this.state;
-
-    const setFavorite = (e) => {
-      console.log(this.state.favoriteMovies, 'this is local storage');
-      const movieId = e.target.id;
-      if (this.state.favoriteMovies) {
-        if (!this.state.favoriteMovies.find((movie) => movie === movieId)) {
-          this.state.favoriteMovies.push(movieId);
-          localStorage.setItem(
-            'favoriteMovies',
-            JSON.stringify(this.state.favoriteMovies)
-          );
-
-          e.target.classList.add('Ghost-btn');
-          e.target.innerText = 'Remove';
-        }
-
-      } else {
-        let movieList = [];
-        movieList.push(movieId);
-        e.target.classList.add('Ghost-btn');
-        e.target.innerText = 'Remove';
-        localStorage.setItem('favoriteMovies', JSON.stringify(movieList));
-      }
-    };
 
     return (
       <div className="App">
@@ -83,15 +86,22 @@ class App extends React.Component {
         <div className="Gray-line"></div>
         <main className="Content">
           <div className="Cards-wraper">
-            {movies.map(({ title, id, description, image }) => (
+            {movies.map(({ title, id, description, image }, index) => (
               <Card
                 title={title}
                 description={description}
                 src={image}
                 alt={title}
+                key={index}
               >
-                <Button btnStyle="Card-btn" onClick={setFavorite} id={id}>
-                  Favorite
+                <Button
+                  btnStyle="Card-btn"
+                  onClick={(e) => this.setFavorite(e)}
+                  id={id}
+                >
+                  {this.state.favoriteMovies.includes(id)
+                    ? 'Remove'
+                    : 'Favorite'}
                 </Button>
               </Card>
             ))}
