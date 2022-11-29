@@ -53,7 +53,7 @@ class App extends React.Component {
         favoriteMoviesArray.push(movieId);
         localStorage.setItem(
           'favoriteMovies',
-          JSON.stringify(this.state.favoriteMovies)
+          JSON.stringify(favoriteMoviesArray)
         );
       } else {
         const index = favoriteMoviesArray.findIndex(
