@@ -4,6 +4,7 @@ import './index.css';
 class Button extends React.Component {
   render() {
     const { children, btnStyle, onClick } = this.props;
+
     if (children === "Remove" || children === "Favorite") {
       return (
         <button

@@ -45,30 +45,26 @@ class App extends React.Component {
   }
 
   setFavorite = (e) => {
-    const movieId = e.target.id;
+    const movieId = [];
+    movieId.push(e.target.id)
 
-    if (this.state.favoriteMovies) {
-      const favoriteMoviesArray = this.state.favoriteMovies;
-      if (!favoriteMoviesArray.find((movie) => movie === movieId)) {
-        favoriteMoviesArray.push(movieId);
-        localStorage.setItem(
-          'favoriteMovies',
-          JSON.stringify(favoriteMoviesArray)
-        );
-      } else {
-        const index = favoriteMoviesArray.findIndex(
-          (movie) => movieId === movie
-        );
-        favoriteMoviesArray.splice(index, 1);
-        localStorage.setItem(
-          'favoriteMovies',
-          JSON.stringify(favoriteMoviesArray)
-        );
-      }
+    const favoriteMoviesArray = this.state.favoriteMovies;
+    if (!favoriteMoviesArray.find((movie) => movie === movieId[0])) {
+      const updatedFavoriteMovies = favoriteMoviesArray.concat(movieId);
+
+      localStorage.setItem(
+        'favoriteMovies',
+        JSON.stringify(updatedFavoriteMovies)
+      );
+      this.setState({ favoriteMovies: updatedFavoriteMovies });
     } else {
-      let movieList = [];
-      movieList.push(movieId);
-      localStorage.setItem('favoriteMovies', JSON.stringify(movieList));
+      const index = favoriteMoviesArray.findIndex((movie) => movieId[0] === movie);
+      favoriteMoviesArray.splice(index, 1);
+      localStorage.setItem(
+        'favoriteMovies',
+        JSON.stringify(favoriteMoviesArray)
+      );
+      this.setState({ favoriteMovies: favoriteMoviesArray });
     }
   };
 
