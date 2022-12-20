@@ -1,0 +1,29 @@
+.App {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  
+  .Content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .Cards-wraper {
+    margin-top: 48px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 100px;
+    justify-content: space-between;
+  }
+  
+  .Gray-line {
+    height: 10px;
+    background-color: #222;
+  }
+  
+  .Btn-wrap {
+    margin-top: 68px;
+    display: flex;
+    justify-content: center;
+  }
+  
