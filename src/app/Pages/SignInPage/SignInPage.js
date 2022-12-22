@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
@@ -9,24 +9,23 @@ import { Navigate } from 'react-router-dom';
 
 import './SignInPage.css';
 
-class SigninPage extends React.Component {
-  state = {
-    username: '',
-    password: '',
-    logged: null,
-  };
+function SigninPage({setToken}) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [logged, setLogged] = useState(null);
   
-  setUserAndPassword = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+  const setUserAndPassword = (e) => {
+    e.target.name === "username" ? setUsername(e.target.value) : setPassword(e.target.value)
+    console.log(e.target.name)
+    console.log(e.target.value)
   };
 
-  loginHandler = (e) => {
-    e.preventDefault();
-    fetch('https://dummy-video-api.onrender.com/auth/login', {
+  const loginHandler = useCallback(async() => {
+   await fetch('https://dummy-video-api.onrender.com/auth/login', {
       method: 'POST',
       body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password,
+        username,
+        password,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -36,15 +35,19 @@ class SigninPage extends React.Component {
       .then((result) => {
         if (result.token) {
           localStorage.setItem('FelixToken', result.token);
-          this.setState({ logged: true });
-          this.props.setToken(result.token)
+          setLogged(true);
+          setToken(result.token)
         } else {
-          this.setState({ logged: false });
+          setLogged(false);
         }
       });
-  };
+  }, [username, password, setToken])
 
-  render() {
+
+  // useEffect(() => {
+  //   loginHandler()
+  // }, [loginHandler])
+
   
     return (
       <div className="App">
@@ -55,17 +58,16 @@ class SigninPage extends React.Component {
         </Header>
         <main className="Content-block">
           <LoginForm
-            loginHandler={this.loginHandler}
-            onChange={this.setUserAndPassword}
-            logged={this.state.logged}
+            loginHandler={loginHandler}
+            onChange={setUserAndPassword}
+            logged={logged}
           ></LoginForm>
         </main>
 
         <Footer></Footer>
-        {this.state.logged && <Navigate to='/userpage' />}
+        {logged && <Navigate to='/userpage' />}
       </div>
     );
   }
-}
 
 export default SigninPage;
