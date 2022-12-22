@@ -9,7 +9,7 @@ class Button extends React.Component {
     const { children, btnStyle, onClick, to, deleteToken} = this.props;
 
     if (to) {
-      return <Link className={btnStyle} to={to} onClick={children === "Logout" ? deleteToken : false} >{children}</Link>;
+      return <Link className={btnStyle} to={to} onClick={children === "Logout" ? deleteToken : onClick} >{children}</Link>;
     }
 
     if (children === "Remove" || children === "Favorite") {
