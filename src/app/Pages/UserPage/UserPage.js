@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Card from '../../components/MovieCard';
@@ -8,27 +8,16 @@ import './UserPage.css';
 
 import Logo from '../../images/F.png';
 
-class UserPage extends React.Component {
-  state = {
-    loading: false,
-    error: false,
-    favoriteMovies: [],
-    movies: [],
-  };
+function UserPage({setFavorite, favoriteMovies, deleteToken}) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [movies, setMovies] = useState([]);
 
+useEffect(() => {
 
-  async componentDidMount() {
-    this.setState({ loading: true });
-
+  const fetchData = async () => {
     try {
-      if (localStorage.getItem('favoriteMovies')) {
-        const favoriteMovies = JSON.parse(
-          localStorage.getItem('favoriteMovies')
-        );
-        this.setState({ favoriteMovies });
-      }
-
-      const result = await fetch(
+       const result = await fetch(
         'https://dummy-video-api.onrender.com/content/items',
         {
           headers: {
@@ -37,23 +26,21 @@ class UserPage extends React.Component {
         }
       );
       if (result.status >= 400 && result.status <= 599) {
-        this.setState({ error: true });
+        setError(true);
       } else {
         const movies = await result.json();
-        this.setState({ movies: movies });
+        setMovies(movies);
       }
     } catch (error) {
-      this.setState({ error: true });
+      setError(true);
     } finally {
-      this.setState({ loading: false });
+      setLoading(false);
     }
   }
 
+  fetchData()
 
-
-  render() {
-    const { setFavorite, favoriteMovies, deleteToken } = this.props;
-    const { movies } = this.state;
+}, [])
 
     return (
       <div className="App">
@@ -84,6 +71,5 @@ class UserPage extends React.Component {
       </div>
     );
   }
-}
 
 export default UserPage;
